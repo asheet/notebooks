@@ -1,0 +1,12 @@
+{
+  "display_name": "Python 3.8 (UBI8)",
+  "metadata": {
+    "tags": [
+      "minimal"
+    ],
+    "display_name": "Python 3.8 (UBI8)",
+    "image_name": "quay.io/opendatahub/workbench-images@sha256:98a035d355d67120fc913cf753866d7bad2227af21ccc3894148b4b679d40c3d",
+    "pull_policy": "IfNotPresent"
+  },
+  "schema_name": "runtime-image"
+}

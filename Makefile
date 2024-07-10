@@ -43,7 +43,7 @@ define build_image
 		$(eval BUILD_ARGS := --build-arg BASE_IMAGE=$(BASE_IMAGE_NAME)),
 		$(eval BUILD_ARGS :=)
 	)
-	$(CONTAINER_ENGINE) build $(CONTAINER_BUILD_CACHE_ARGS)  -t $(IMAGE_NAME) $(BUILD_ARGS)  $(2)
+	$(CONTAINER_ENGINE) build $(CONTAINER_BUILD_CACHE_ARGS)  -t $(IMAGE_NAME) $(BUILD_ARGS)  $(2) --platform linux/amd64
 endef
 
 # Push function for the notebok image:
@@ -143,6 +143,32 @@ runtime-cuda-tensorflow-ubi8-python-3.8: cuda-ubi8-python-3.8
 	$(call image,$@,runtimes/tensorflow/ubi8-python-3.8,$<)
 
 ####################################### Buildchain for Python 3.9 using ubi9 #######################################
+# Build and push jupyter-minimal-ubi9-python-3.9 image to the registry
+
+# Build and push base-ubi8-python-3.9 image to the registry
+.PHONY: base-ubi8-python-3.9
+base-ubi8-python-3.9:
+	$(call image,$@,base/ubi8-python-3.9)
+
+# Build and push cuda-ubi8-python-3.9 image to the registry
+.PHONY: cuda-ubi8-python-3.9
+cuda-ubi8-python-3.9: base-ubi8-python-3.9
+	$(call image,$@,cuda/ubi8-python-3.9,$<)
+
+# Build and push cuda-jupyter-minimal-ubi8-python-3.9 image to the registry
+.PHONY: cuda-jupyter-minimal-ubi8-python-3.9
+cuda-jupyter-minimal-ubi8-python-3.9: cuda-ubi8-python-3.9
+	$(call image,$@,jupyter/minimal/ubi8-python-3.9,$<)
+
+# Build and push cuda-jupyter-datascience-ubi8-python-3.9 image to the registry
+.PHONY: cuda-jupyter-datascience-ubi8-python-3.9
+cuda-jupyter-datascience-ubi8-python-3.9: cuda-jupyter-minimal-ubi8-python-3.9
+	$(call image,$@,jupyter/datascience/ubi8-python-3.9,$<)
+
+# Build and push jupyter-pytorch-ubi8-python-3.9 image to the registry
+.PHONY: jupyter-pytorch-ubi8-python-3.9
+jupyter-pytorch-ubi8-python-3.9: cuda-jupyter-datascience-ubi8-python-3.9
+	$(call image,$@,jupyter/pytorch/ubi8-python-3.9,$<)
 
 # Build and push base-ubi9-python-3.9 image to the registry
 .PHONY: base-ubi9-python-3.9
